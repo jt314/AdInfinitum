@@ -26,7 +26,7 @@ typedef struct Transform_Triangle {
   float o_coord; // origin coord of the transforming triangle
   float weight;  // weight value of the transforming triangle
 
-  double[NUM_TRANSFORM_OPS] transform_weights; //weights of the transformations perforemed by transforming triangle
+  float[NUM_TRANSFORM_OPS] transform_weights; //weights of the transformations perforemed by transforming triangle
 
 } transform_triangle_t;
 
