@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "../inc/image_plane.h"
 
@@ -58,6 +59,46 @@ void plot(image_plane_t* plane, float x, float y) {
   int j = x1 * plane->width;
 
   //Increment into the histogram and you're done :)
-  plane->values[i][j]++;
+  plane->values[i][j] = 1; //++; //THIS SHOULD BE AN INCREMENT!!!!
 
 }
+
+
+void writePGM (image_plane_t* plane, char* filename) {
+  int i, j;    // index variables 
+  int max=-2;  // for pgm file output 
+
+  // PGM file format requires the largest 
+  // pixel value.  Calculate this.        
+  for(i=0; i<plane->height; ++i) {
+    for(j=0; j<plane->width; ++j) {
+      if(plane->values[i][j] > max-1) {
+	max = plane->values[i][j]+1;
+      }
+
+    }
+
+  }
+
+  // open the file for writing. omit error checking. 
+  FILE * fout = fopen(filename, "w");
+
+  // PGM file header 
+  fprintf(fout, "P2\n");
+  fprintf(fout, "%d\t%d\n", plane->width, plane->height);
+  fprintf(fout, "%d\n",max);
+
+  // throw out the data 
+  for(i=0; i<plane->height; ++i) {
+    for(j=0; j<plane->width; ++j) {
+      int x = plane->values[i][j];
+      fprintf(fout, "%d\t", x);
+    }
+    fprintf(fout,"\n");
+  }
+
+  // flush the buffer and close the file 
+  fflush(fout);
+  fclose(fout);
+}
+

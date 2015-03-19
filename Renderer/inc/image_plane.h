@@ -25,4 +25,7 @@ void destroy_plane(image_plane_t* killme);
 // points "hit" when playing the Chaos Game.
 void plot(image_plane_t* plane, float x, float y);
 
+void writePGM (image_plane_t* plane, char * filename);
+
+
 #endif
