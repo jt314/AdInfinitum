@@ -5,7 +5,7 @@
 
 #include "../inc/transform_triangle.h"
 
-#define NUM_ITERATIONS 500000
+#define NUM_ITERATIONS 9000000
 
 unsigned int rand_interval(unsigned int min, unsigned int max)
 {
@@ -39,7 +39,7 @@ double rand01()
     seeded = 1;
   }
 
-  return drand48();
+  return drand48()*2-1;
 
 }
 
@@ -60,6 +60,8 @@ transform_point_t apply_variation(float x, float y, int z, float w) {
   float r = sqrt(x*x + y*y);
   float THETA = atan2(x,y);
   float PHI = atan2(y,x);
+
+  //printf("BEGIN CALC: x=%f, y=%f\n",x,y);
 
 
   switch(z) {
@@ -92,9 +94,15 @@ transform_point_t apply_variation(float x, float y, int z, float w) {
     y = 0;
   }
 
+  if(w*X != w*X) X = 0; //if NaN
+  if(w*Y != w*Y) Y = 0; //if NaN
+
   transform_point_t returnme;
   returnme.x = w*X;
   returnme.y = w*Y;
+
+  //printf("FINIS CALC: X=%f, Y=%f\n",X,Y);
+  //printf("FINAL CALC: wX=%f, wY=%f\n",returnme.x,returnme.y);
 
   return returnme;
 
@@ -132,16 +140,20 @@ image_plane_t chaos_game(transform_triangle_t* list, int len, int width, int hei
   int z; //loop counter
 
   for(z = 0; z< NUM_ITERATIONS; z++) {
-
+    //printf("WE ARE AT %d!!\n",z);
     int i = rand_interval(0,len-1);
+    //printf("WE ARE AT %d!! AND THE RANDOM NUMBER IS %d!!\n",z,i);
     transform_point_t thepoint = apply_function(list[i],x,y);
     x = thepoint.x;
     y = thepoint.y;
+
+    //printf("Segfault here?? x=%f, y=%f\n",x,y);
 
     if(z > 20) {
       plot(&returnme,x,y);
     }
    
+    //printf("or here???\n");
 
   }
 

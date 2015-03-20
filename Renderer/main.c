@@ -26,11 +26,11 @@ int main(int argc, char** argv) {
   transform_triangle_t* B = gaskets+2; //loop bound
 
   //Code F0: x,y => x/2,y/2
-  set_affines(A,0.5,0,0,0,0.5,0);
+  set_affines(A, 0.5, 0, 0, 0, 0.5, 0);
   A++; //increment
-  set_affines(A,0.5,0,0.5,0,0.5,0);
+  set_affines(A, 0.5, 0, -0.5, 0, 0.5, 0);
   A--; //reset;
-  set_affines(B,0.5,0,0,0,0.5,0.5);
+  set_affines(B, 0.5, 0, 0, 0, 0.5, -0.5);
 
   //Now to make sure the weights make sense
   for(A;A<=B; A++) {
@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
     }
   }
 
-  image_plane_t map = chaos_game(gaskets,3,1000,1000);
+  image_plane_t map = chaos_game(gaskets,3,1280,1024);//3840,2160);
 
   printf("THE VALUE OF THE THING IS %f\n",map.values[1][1]);
 
